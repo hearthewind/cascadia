@@ -1,5 +1,5 @@
-from .depthcharge.encoders import PeakEncoder, FloatEncoder
-from .depthcharge.transformers import SpectrumTransformerEncoder, PeptideTransformerDecoder
+from depthcharge.encoders import PeakEncoder, FloatEncoder
+from depthcharge.transformers import SpectrumTransformerEncoder, PeptideTransformerDecoder
 from typing import Any, Dict, Iterable, List, Tuple
 import torch
 import numpy as np
