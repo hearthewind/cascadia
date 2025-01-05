@@ -1,2 +1,5 @@
 __pycache__
 .idea/
+pretrained_model/
+cascadia/cascadia_*
+cascadia/lightning_logs/

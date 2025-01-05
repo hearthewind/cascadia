@@ -191,6 +191,8 @@ class MsgpParser(BaseParser):
         self.fragment_arrays = []
         self.global_rts = []
         self._counter = -1
+
+        self.top_n = 150
     
     def parse_spectrum(self, spectrum: dict) -> MassSpectrum:
         pass
@@ -230,18 +232,22 @@ class MsgpParser(BaseParser):
             fragment_labels = []
 
             for _, spectrum in related_ms1.iterrows():
-                mzs.extend(list(spectrum.mz))
-                intensities.extend(list(spectrum.intensity))
-                rts.extend([spectrum.rt] * len(spectrum.mz))
-                levels.extend([1] * len(spectrum.mz))
-                fragment_labels.extend([0] * len(spectrum.mz))
+                sorted_intensity_idxs = np.argsort(spectrum.intensity)[-self.top_n:]
+
+                mzs.extend(list(spectrum.mz[sorted_intensity_idxs]))
+                intensities.extend(list(spectrum.intensity[sorted_intensity_idxs]))
+                rts.extend([spectrum.rt] * len(spectrum.mz[sorted_intensity_idxs]))
+                levels.extend([1] * len(spectrum.mz[sorted_intensity_idxs]))
+                fragment_labels.extend([0] * len(spectrum.mz[sorted_intensity_idxs]))
 
             for _, spectrum in related_ms2.iterrows():
-                mzs.extend(list(spectrum.mz))
-                intensities.extend(list(spectrum.intensity))
-                rts.extend([spectrum.rt] * len(spectrum.mz))
-                levels.extend([2] * len(spectrum.mz))
-                fragment_labels.extend([0] * len(spectrum.mz))
+                sorted_intensity_idxs = np.argsort(spectrum.intensity)[-self.top_n:]
+
+                mzs.extend(list(spectrum.mz[sorted_intensity_idxs]))
+                intensities.extend(list(spectrum.intensity[sorted_intensity_idxs]))
+                rts.extend([spectrum.rt] * len(spectrum.mz[sorted_intensity_idxs]))
+                levels.extend([2] * len(spectrum.mz[sorted_intensity_idxs]))
+                fragment_labels.extend([0] * len(spectrum.mz[sorted_intensity_idxs]))
 
             spectrum = MassSpectrum(
                 filename=str(self.path),
