@@ -38,3 +38,6 @@ def write_results(preds, results_file, raw_file, isolation_window_size, score_th
               pred_mz = _calc_precursor_mass(nb.typed.List(Peptide.from_massivekb(pred).split()), charge, tokenizer.residues)
               if np.abs(pred_mz - mz) < 2*isolation_window_size:
                 out.write("\t".join([raw_file, str(idx), str(charge), pred, 'Cascadia Score', str(conf), str(rt), str(rt-time_width), str(rt+time_width)]) + '\n')
+              else:
+                print("Warning: Predicted sequence does not match precursor mass.")
+                out.write("\t".join([raw_file, str(idx), str(charge), pred, 'Cascadia Score', str(conf), str(rt), str(rt-time_width), str(rt+time_width)]) + '\n')
