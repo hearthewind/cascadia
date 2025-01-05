@@ -205,7 +205,13 @@ class MsgpParser(BaseParser):
         directory_path = str(self.path.parent) + '/'
 
         n_skipped = 0
+        total = 0
         for index, row in tqdm(spec_header.iterrows(), total=len(spec_header), desc=f'Reading file {self.path.name}'):
+            total += 1
+
+            # if total > 100:
+            #     break
+
             with open(os.path.join(directory_path, row['MSGP File Name']), 'rb') as f:
                 f.seek(row['MSGP Datablock Pointer'])
                 spec = pickle.loads(gzip.decompress(f.read(int(row['MSGP Datablock Length']))))
@@ -236,7 +242,7 @@ class MsgpParser(BaseParser):
 
                 mzs.extend(list(spectrum.mz[sorted_intensity_idxs]))
                 intensities.extend(list(spectrum.intensity[sorted_intensity_idxs]))
-                rts.extend([spectrum.rt] * len(spectrum.mz[sorted_intensity_idxs]))
+                rts.extend([spectrum.rt - rt] * len(spectrum.mz[sorted_intensity_idxs]))
                 levels.extend([1] * len(spectrum.mz[sorted_intensity_idxs]))
                 fragment_labels.extend([0] * len(spectrum.mz[sorted_intensity_idxs]))
 
@@ -245,7 +251,7 @@ class MsgpParser(BaseParser):
 
                 mzs.extend(list(spectrum.mz[sorted_intensity_idxs]))
                 intensities.extend(list(spectrum.intensity[sorted_intensity_idxs]))
-                rts.extend([spectrum.rt] * len(spectrum.mz[sorted_intensity_idxs]))
+                rts.extend([spectrum.rt - rt] * len(spectrum.mz[sorted_intensity_idxs]))
                 levels.extend([2] * len(spectrum.mz[sorted_intensity_idxs]))
                 fragment_labels.extend([0] * len(spectrum.mz[sorted_intensity_idxs]))
 
