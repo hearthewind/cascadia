@@ -17,7 +17,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from .my_parsers import MsgpParser
+from .my_parsers_v2 import MsgpParser
 from .. import utils
 from ..primitives import MassSpectrum
 from ..tokenizers import PeptideTokenizer
