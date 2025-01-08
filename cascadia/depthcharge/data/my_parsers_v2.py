@@ -210,8 +210,8 @@ class MsgpParser(BaseParser):
         for index, row in tqdm(spec_header.iterrows(), total=len(spec_header), desc=f'Reading file {self.path.name}'):
             total += 1
 
-            if total > 100:
-                break
+            # if total > 100:
+            #     break
 
             with open(os.path.join(directory_path, row['MSGP File Name']), 'rb') as f:
                 f.seek(row['MSGP Datablock Pointer'])
