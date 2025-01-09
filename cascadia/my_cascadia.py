@@ -96,7 +96,7 @@ def train():
   parser.add_argument("train_spectrum_file")
   parser.add_argument("val_spectrum_file")
   parser.add_argument("-m", "--model", type= str, required=False, help="A path to a Cascadia model checkpoint to fine tune.")
-  parser.add_argument("-b", "--batch_size", type= int, default= 32, help="Number of spectra to include in a batch.")
+  parser.add_argument("-b", "--batch_size", type= int, default= 2, help="Number of spectra to include in a batch.")
   parser.add_argument("-w", "--width", type= int, default= 2, help="Number of adjacent scans to use when constructing each augmented spectrum.")
   parser.add_argument("-c", "--max_charge", type= int, default= 4, help="Maximum precursor charge state to consider.")
   parser.add_argument("-e", "--max_epochs", type= int, default= 10, help="Maximum number of training epochs.")
@@ -190,6 +190,9 @@ def train():
       save_top_k=2
   )
   trainer = pl.Trainer(max_epochs=max_epochs, logger=tb_logger, log_every_n_steps=10000, val_check_interval = 10000, check_val_every_n_epoch=None, callbacks=[ckpt_callback], accelerator=device, devices=1)
+  # trainer = pl.Trainer(max_epochs=max_epochs, logger=tb_logger, log_every_n_steps=10000, val_check_interval=10000,
+  #                      check_val_every_n_epoch=None, callbacks=[ckpt_callback], accelerator=device, devices=2, strategy='ddp')
+
   trainer.fit(model, train_loader, val_loader)
   
 def main():
