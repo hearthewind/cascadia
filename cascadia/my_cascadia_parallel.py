@@ -18,7 +18,7 @@ import warnings
 import json
 warnings.filterwarnings('ignore')
 
-NUM_DEVICES = 4
+NUM_DEVICES = torch.cuda.device_count()
 
 def sequence():
   parser=argparse.ArgumentParser()
